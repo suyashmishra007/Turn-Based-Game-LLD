@@ -20,7 +20,7 @@ public class AIEngine {
     if (board instanceof TicTacToeBoard) {
       TicTacToeBoard board1 = (TicTacToeBoard) board;
       Move suggestion;
-      int threshold = 4;
+      int threshold = 3;
       if (countMoves(board1) < threshold) {
         suggestion = getBasicMove(computer, board1);
       } else {

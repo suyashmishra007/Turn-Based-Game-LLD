@@ -27,7 +27,6 @@ public class GamePlayTest {
       Player human = new Player("O");
       int row = firstPlayermoves[next][0];
       int col = firstPlayermoves[next][1];
-      next++;
       Move humanMove = new Move(new Cell(row, col), human);
       gameEngine.move(board, humanMove);
       System.out.println(board.toString());
@@ -38,6 +37,7 @@ public class GamePlayTest {
         Move computerMove = new Move(new Cell(sRow,sCol),computer);
         gameEngine.move(board, computerMove);
       }
+      next++;
     }
   }
 
@@ -55,7 +55,7 @@ public class GamePlayTest {
   public void checkforColWin() {
     Board board = gameEngine.start("TicTacToe");
     int moves[][] = new int[][] { { 0, 0 }, { 1, 0 }, { 2, 0 } };
-    int secondPlayermoves[][] = new int[][] {{1,0},{1,1},{1,2}};
+    int secondPlayermoves[][] = new int[][] {{0,1},{0,2},{1,1}};
     playGame(board, moves,secondPlayermoves);
     Assertions.assertTrue(ruleEngine.getState(board).isOver());
     Assertions.assertEquals(ruleEngine.getState(board).getWinner(), "O");
@@ -75,20 +75,20 @@ public class GamePlayTest {
   public void checkforRevDiagWin() {
     Board board = gameEngine.start("TicTacToe");
     int moves[][] = new int[][] { { 0, 2 }, { 1, 1 }, { 2, 0 } };
-    int secondPlayermoves[][] = new int[][] {{0,0},{1,2},{2,0}};
+    int secondPlayermoves[][] = new int[][] {{0,0},{0,1},{1,0}};
     playGame(board, moves,secondPlayermoves);
     Assertions.assertTrue(ruleEngine.getState(board).isOver());
     Assertions.assertEquals(ruleEngine.getState(board).getWinner(), "O");
   }
 
-//   @Test
-//   public void checkforSecondPlayerWin(){
-//       Board board = gameEngine.start("TicTacToe");
-//       int moves[][] = new int[][]{{1,0},{1,1},{2,0}};
-//       int secondPlayermoves[][] = new int[][] {{0,0},{0,1},{0,2}};
-//       playGame(board,moves,secondPlayermoves);
-//       Assertions.assertTrue(ruleEngine.getState(board).isOver());
-//       Assertions.assertEquals(ruleEngine.getState(board).getWinner(),"X");
-//   }
-
+   @Test
+   public void checkforSecondPlayerWin(){
+     Board board = gameEngine.start("TicTacToe");
+     //make moves in a loop
+     int[][] moves = new int[][]{{1, 0}, {1, 1}, {2, 0}};
+     int[][] secondPlayerMoves = new int[][]{{0, 0}, {0, 1}, {0, 2}};
+     playGame(board, moves, secondPlayerMoves);
+       Assertions.assertTrue(ruleEngine.getState(board).isOver());
+       Assertions.assertEquals(ruleEngine.getState(board).getWinner(),"X");
+   }
 }

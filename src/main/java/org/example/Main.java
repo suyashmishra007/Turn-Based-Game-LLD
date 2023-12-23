@@ -13,7 +13,6 @@ public class Main {
     RuleEngine ruleEngine = new RuleEngine();
     AIEngine aiEngine = new AIEngine();
     Board board = gameEngine.start("TicTacToe");
-`
     int row, col;
     Scanner scanner = new Scanner(System.in);
 
@@ -28,13 +27,13 @@ public class Main {
       Move humanMove = new Move(new Cell(row, col), human);
       gameEngine.move(board, humanMove);
       System.out.println(board.toString());
-//      if (!ruleEngine.getState(board).isOver()) {
-//        Player computer = new Player("X");
-//        Move computerMove = aiEngine.suggestMove(computer, board);
-//        System.out.println("Computer moved with X");
-//        gameEngine.move(board, computerMove);
-//        System.out.println(board);
-//      }
+      if (!ruleEngine.getState(board).isOver()) {
+        Player computer = new Player("X");
+        Move computerMove = aiEngine.suggestMove(computer, board);
+        System.out.println("Computer moved with X");
+        gameEngine.move(board, computerMove);
+        System.out.println(board);
+      }
     }
     System.out.println("GameResult " + ruleEngine.getState(board));
     System.out.println(board);
