@@ -7,12 +7,52 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.example.boards.TicTacToeBoard;
-import org.example.game.Board;
-import org.example.game.GameState;
+import org.example.game.*;
 
 public class RuleEngine {
 
-  // TODO: Implement fork logic. Section 5 : Video 1
+  public GameInfo getInfo(TicTacToeBoard board) {
+    if (board instanceof TicTacToeBoard) {
+      GameState gameState = getState(board);
+
+      String[] players = new String[] { "X", "O" };
+      for (int index = 0; index < 2; index++) {
+        for (int i = 0; i < 3; i++) {
+          for (int j = 0; j < 3; j++) {
+            TicTacToeBoard boardCopy = board.copy();
+            String playerSymbol = players[index];
+            Player player = new Player(playerSymbol);
+            boardCopy.move(new Move(new Cell(i, j), player));
+            boolean canStillWin = false;
+            for (int k = 0; k < 3; k++) {
+              for (int l = 0; l < 3; l++) {
+                TicTacToeBoard boardCopy1 = boardCopy.copy();
+                boardCopy1.move(new Move(new Cell(k, l), player.flip()));
+                if (
+                  getState(boardCopy1)
+                    .getWinner()
+                    .equals(player.flip().symbol())
+                ) {
+                  canStillWin = true;
+                  break;
+                }
+              }
+              if (canStillWin) {
+                break;
+              }
+            }
+            if (canStillWin) {
+              return new GameInfo(gameState, true, player.flip());
+            }
+          }
+        }
+      }
+      return new GameInfo(gameState, false, null);
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
   public Map<String, List<Rule<TicTacToeBoard>>> ruleMap = new HashMap<>();
 
   public RuleEngine() {
