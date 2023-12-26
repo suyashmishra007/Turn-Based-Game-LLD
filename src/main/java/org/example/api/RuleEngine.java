@@ -42,12 +42,20 @@ public class RuleEngine {
               }
             }
             if (canStillWin) {
-              return new GameInfo(gameState, true, player.flip());
+              return new GameInfoBuilder()
+                .isOver(gameState.isOver())
+                .winner(gameState.getWinner())
+                .hasFork(true)
+                .player(player.flip())
+                .build();
             }
           }
         }
       }
-      return new GameInfo(gameState, false, null);
+      return new GameInfoBuilder()
+        .isOver(gameState.isOver())
+        .winner(gameState.getWinner())
+        .build();
     } else {
       throw new IllegalArgumentException();
     }
