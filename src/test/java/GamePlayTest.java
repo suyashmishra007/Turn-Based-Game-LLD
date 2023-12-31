@@ -1,7 +1,6 @@
-import org.example.api.AIEngine;
 import org.example.api.GameEngine;
 import org.example.api.RuleEngine;
-import org.example.game.Board;
+import org.example.boards.Board;
 import org.example.game.Cell;
 import org.example.game.Move;
 import org.example.game.Player;

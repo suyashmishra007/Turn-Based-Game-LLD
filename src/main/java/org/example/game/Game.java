@@ -1,5 +1,7 @@
 package org.example.game;
 
+import org.example.boards.Board;
+
 public class Game {
 
   private GameConfig gameConfig;

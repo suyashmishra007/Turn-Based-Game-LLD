@@ -1,5 +1,6 @@
 package org.example.api;
 
+import org.example.boards.Board;
 import org.example.boards.TicTacToeBoard;
 import org.example.game.*;
 

@@ -1,9 +1,8 @@
 package org.example;
 
 import java.util.Scanner;
-import org.example.api.AIEngine;
-import org.example.api.GameEngine;
-import org.example.api.RuleEngine;
+import org.example.api.*;
+import org.example.boards.Board;
 import org.example.game.*;
 
 public class Main {

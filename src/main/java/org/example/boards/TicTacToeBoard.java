@@ -6,7 +6,7 @@ import org.example.api.Rule;
 import org.example.api.RuleSet;
 import org.example.game.*;
 
-public class TicTacToeBoard implements Board {
+public class TicTacToeBoard implements CellBoard {
 
   public String[][] cells = new String[3][3];
 
@@ -55,25 +55,16 @@ public class TicTacToeBoard implements Board {
     return ticTacToeBoard;
   }
 
-  public static RuleSet<TicTacToeBoard> getRules() {
+  public static RuleSet getRules() {
     RuleSet rules = new RuleSet();
     rules.add(
-      new Rule<TicTacToeBoard>(board ->
-        outerTraversals((i, j) -> board.getSymbol(i, j))
-      )
+      new Rule(board -> outerTraversals((i, j) -> board.getSymbol(i, j)))
     );
     rules.add(
-      new Rule<TicTacToeBoard>(board ->
-        outerTraversals((i, j) -> board.getSymbol(j, i))
-      )
+      new Rule(board -> outerTraversals((i, j) -> board.getSymbol(j, i)))
     );
-    rules.add(
-      new Rule<TicTacToeBoard>(board -> traverse(i -> board.getSymbol(i, i)))
-    );
-    rules.add(
-      new Rule<TicTacToeBoard>(board -> traverse(i -> board.getSymbol(i, 2 - i))
-      )
-    );
+    rules.add(new Rule(board -> traverse(i -> board.getSymbol(i, i))));
+    rules.add(new Rule(board -> traverse(i -> board.getSymbol(i, 2 - i))));
     rules.add(
       new Rule(board -> {
         int countOfFilledCells = 0;

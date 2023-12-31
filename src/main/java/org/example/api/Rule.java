@@ -1,13 +1,14 @@
 package org.example.api;
 
 import java.util.function.Function;
+import org.example.boards.CellBoard;
 import org.example.game.*;
 
-public class Rule<T extends Board> {
+public class Rule {
 
-  Function<T, GameState> condition;
+  Function<CellBoard, GameState> condition;
 
-  public Rule(Function<T, GameState> condition) {
+  public Rule(Function<CellBoard, GameState> condition) {
     this.condition = condition;
   }
 }
