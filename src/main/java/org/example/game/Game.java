@@ -7,8 +7,19 @@ public class Game {
   private GameConfig gameConfig;
   private Board board;
   private String winnner;
+
+  public Game(GameConfig gameConfig, Board board, String winnner, int lastMoveInMillis, int maxTimePerPlayer, int maxTimePerMove) {
+    this.gameConfig = gameConfig;
+    this.board = board;
+    this.winnner = winnner;
+    this.lastMoveInMillis = lastMoveInMillis;
+    this.maxTimePerPlayer = maxTimePerPlayer;
+    this.maxTimePerMove = maxTimePerMove;
+  }
+
   private int lastMoveInMillis;
   private int maxTimePerPlayer;
+  private int maxTimePerMove;
 
   public void move(Move move, int timeStampInMillis) {
     int timeTakenSinceLastMove = timeStampInMillis - lastMoveInMillis;
@@ -20,27 +31,23 @@ public class Game {
     }
   }
 
-  private boolean moveMadeInTime(int timeTakenSinceLastMove) {
-    return timeTakenSinceLastMove < maxTimePerPlayer;
-  }
-
-  private boolean moveMadeInTime(Player player) {
-    return player.getTimeUsedInMillis() < maxTimePerPlayer;
-  }
-
   private void moveForTimedGame(Move move, int timeTakenSinceLastMove) {
-    if (gameConfig.timePerMove != null) {
-      if (moveMadeInTime(timeTakenSinceLastMove)) {
-        board.move(move);
-      } else {
-        winnner = move.getPlayer().flip().symbol();
-      }
+    final int currentTime,endTime;
+    if(gameConfig.timePerMove != null){
+      currentTime = timeTakenSinceLastMove;
+      endTime = maxTimePerMove;
     } else {
-      if (moveMadeInTime(move.getPlayer())) {
-        board.move(move);
-      } else {
-        winnner = move.getPlayer().flip().symbol();
-      }
+      currentTime = move.getPlayer().getTimeUsedInMillis();
+      endTime = maxTimePerPlayer;
     }
+    if (currentTime < endTime) {
+        board.move(move);
+    } else {
+      winnner = move.getPlayer().flip().symbol();
+    }
+  }
+
+  public void setConfig(GameConfig gameConfig) {
+    this.gameConfig = gameConfig;
   }
 }

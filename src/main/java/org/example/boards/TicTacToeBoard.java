@@ -2,13 +2,13 @@ package org.example.boards;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import org.example.api.Rule;
-import org.example.api.RuleSet;
+import org.example.api.*;
 import org.example.game.*;
 
 public class TicTacToeBoard implements CellBoard {
 
   public String[][] cells = new String[3][3];
+  History history = new History();
 
   public String getCell(int row, int col) {
     return cells[row][col];
@@ -18,7 +18,8 @@ public class TicTacToeBoard implements CellBoard {
     if (cells[cell.getRow()][cell.getCol()] == null) {
       cells[cell.getRow()][cell.getCol()] = symbol;
     } else {
-      throw new IllegalArgumentException();
+      System.out.println(this);
+      throw new IllegalArgumentException(cell.getRow() + " " + cell.getCol());
     }
   }
 
@@ -39,19 +40,20 @@ public class TicTacToeBoard implements CellBoard {
   }
 
   @Override
-  public void move(Move move) {
-    setCell(move.getCell(), move.getPlayer().symbol());
+  public TicTacToeBoard move(Move move) {
+    history.add(new Representation(this));
+    TicTacToeBoard board = copy();
+    board.setCell(move.getCell(), move.getPlayer().symbol());
+    return board;
   }
 
   @Override
   public TicTacToeBoard copy() {
     TicTacToeBoard ticTacToeBoard = new TicTacToeBoard();
     for (int i = 0; i < 3; i++) {
-      //            for (int j = 0; j < 3; j++) {
-      //                ticTacToeBoard.cells[i][j] = cells[i][j];
-      //            }
       System.arraycopy(cells[i], 0, ticTacToeBoard.cells[i], 0, 3);
     }
+    ticTacToeBoard.history = history;
     return ticTacToeBoard;
   }
 
@@ -115,5 +117,20 @@ public class TicTacToeBoard implements CellBoard {
       result = new GameState(true, traversal.apply(0));
     }
     return result;
+  }
+
+  public enum Symbol {
+    X("X"),
+    O("O");
+
+    String marker;
+
+    Symbol(String o) {
+      this.marker = o;
+    }
+
+    public String marker() {
+      return marker;
+    }
   }
 }

@@ -1,7 +1,6 @@
 package org.example.api;
 
 import java.util.Optional;
-
 import org.example.boards.Board;
 import org.example.boards.TicTacToeBoard;
 import org.example.game.*;
@@ -32,6 +31,8 @@ public class AIEngine {
         suggestion = getBasicMove(board1);
       } else if (countMoves(board1) < threshold + 1) {
         suggestion = getCellToPlay(player, board1);
+      } else if (player.getTimeUsedInMillis() > 10000) {
+        suggestion = getBasicMove(board1);
       } else {
         suggestion = getOptimalMove(player, board1);
       }
@@ -86,8 +87,7 @@ public class AIEngine {
       for (int j = 0; j < 3; j++) {
         if (board.getSymbol(i, j) == null) {
           Move move = new Move(new Cell(i, j), player);
-          TicTacToeBoard boardCopy = board.copy();
-          boardCopy.move(move);
+          TicTacToeBoard boardCopy = board.move(move);
           if (ruleEngine.getState(boardCopy).isOver()) {
             return new Cell(i, j);
           }
@@ -102,8 +102,7 @@ public class AIEngine {
       for (int j = 0; j < 3; j++) {
         if (board.getSymbol(i, j) == null) {
           Move move = new Move(new Cell(i, j), player.flip());
-          TicTacToeBoard boardCopy = board.copy();
-          boardCopy.move(move);
+          TicTacToeBoard boardCopy = board.move(move);
           if (ruleEngine.getState(boardCopy).isOver()) {
             return new Cell(i, j);
           }
